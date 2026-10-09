@@ -72,6 +72,8 @@ void put_event_task_display(uint32_t char_column, uint32_t char_row, const char 
 		else
 			p_task_display_dta->ddram[char_row][char_column++] = *message++;
 	}
+	p_task_display_dta->ddram[char_row][char_column] = '\0';
+
 }
 
 /********************** end of file ******************************************/
