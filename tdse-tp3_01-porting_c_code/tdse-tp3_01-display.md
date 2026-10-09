@@ -155,3 +155,22 @@ Las dos tareas principales están diseñadas internamente como Máquinas de Esta
     *   Finalmente, devuelve su estado a `ST_DSP_IDLE` para quedar lista ante futuros avisos.
 
 Este paradigma de arquitectura separa limpiamente a quien produce la información de quién consume el tiempo necesario para comunicarse mediante los GPIO con el LCD.
+
+
+### Depuración del proyecto STM32
+
+Mediante la depuración, analizamos los valores de **task_dta_list[index]**, segun la tabla:
+
+| Expression       | Type         | Value | Unit |
+|------------------|--------------|-------|------|
+|`task_dta_list[0]` | `task_dta_t` | `{...}` | - |
+| --`NOE`      | `uint32_t`   | `396317` | dimensionless |
+| --`LET`      | `uint32_t`   | `2` | uS |
+| --`BCET`     | `uint32_t`   | `2` | uS |
+| --`WCET`     | `uint32_t`   | `37` | uS |
+|`task_dta_list[1]` | `task_dta_t` | `{...}` | - |
+| --`NOE`      | `uint32_t`   | `396317` | dimensionless |
+| --`LET`      | `uint32_t`   | `2` | uS |
+| --`BCET`     | `uint32_t`   | `2` | uS |
+| --`WCET`     | `uint32_t`   | `5698` | uS |
+

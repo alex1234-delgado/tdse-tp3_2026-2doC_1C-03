@@ -65,15 +65,12 @@ void put_event_task_display(uint32_t char_column, uint32_t char_row, const char 
 	p_task_display_dta->event = EV_DSP_UPDATE;
 	p_task_display_dta->flag = true;
 
-	while ((ROWS > char_row) && (COLUMNS > char_column))
-	{
+	while ((ROWS > char_row) && (COLUMNS > char_column)){
 		if ('\0' == *message)
 			break;
 		else
 			p_task_display_dta->ddram[char_row][char_column++] = *message++;
 	}
 	p_task_display_dta->ddram[char_row][char_column] = '\0';
-
 }
-
 /********************** end of file ******************************************/
