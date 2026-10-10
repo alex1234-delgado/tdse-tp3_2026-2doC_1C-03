@@ -117,7 +117,8 @@ void task_test_statechart(void)
 	{
 		p_task_test_dta->tick = DEL_TEST_XX_MAX ;
 
-		put_event_task_display(0, 1, "Test Nro: ******");
+		put_event_task_display(0, 1, "Test Nro:       ");
+		//put_event_task_display(10, 1, "      ");
 
 		snprintf(test_str, sizeof(test_str), "%lu", (p_task_test_dta->counter/DEL_TEST_XX_MAX));
 		put_event_task_display(10, 1, test_str);

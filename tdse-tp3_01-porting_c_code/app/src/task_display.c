@@ -102,13 +102,8 @@ void task_display_init(void *parameters)
 	/* Init & Print out: LCD Display */
 	displayInit( DISPLAY_CONNECTION_GPIO_4BITS );
 
-	displayCharPositionWrite(0, 0);
-    p_task_display_dta->row = 0;
-	displayStringWrite(p_task_display_dta->ddram[p_task_display_dta->row]);
-
-    displayCharPositionWrite(0, 1);
-	p_task_display_dta->row = 1;
-	displayStringWrite(p_task_display_dta->ddram[p_task_display_dta->row]);
+	p_task_display_dta->row = 0;
+	p_task_display_dta->column = 0;
 }
 
 void task_display_update(void *parameters)
@@ -130,36 +125,73 @@ void task_display_statechart(void)
 
 			if ((true == p_task_display_dta->flag) && (EV_DSP_UPDATE == p_task_display_dta->event))
 			{
-				p_task_display_dta->state = ST_DSP_UPDATE;
-			}
-
-			break;
-
-		case ST_DSP_UPDATE:
-
-			if ((true == p_task_display_dta->flag) && (EV_DSP_UPDATE == p_task_display_dta->event))
-			{
-				p_task_display_dta->flag = false;
-				p_task_display_dta->state = ST_DSP_UPDATE;
 				p_task_display_dta->row = 0;
 				p_task_display_dta->column = 0;
-
-				displayCharPositionWrite(0, 0);
-			    p_task_display_dta->row = 0;
-				displayStringWrite(p_task_display_dta->ddram[p_task_display_dta->row]);
-
-			    displayCharPositionWrite(0, 1);
-				p_task_display_dta->row = 1;
-				displayStringWrite(p_task_display_dta->ddram[p_task_display_dta->row]);
-
-				p_task_display_dta->state = ST_DSP_IDLE;
+				p_task_display_dta->state = ST_DSP_SET_POS_L0;
 			}
 
 			break;
+
+		case ST_DSP_SET_POS_L0:
+
+		    displayCharPositionWrite(0, 0);
+
+		    p_task_display_dta->row = 0;
+		    p_task_display_dta->column = 0;
+		    p_task_display_dta->state = ST_DSP_WRITE_L0;
+
+		    break;
+
+		case ST_DSP_WRITE_L0:
+
+		    if (p_task_display_dta->column < COLUMNS)
+		    {
+		        displayDataWrite(p_task_display_dta->ddram[0][p_task_display_dta->column]);
+		        p_task_display_dta->column++;
+		    }
+		    else
+		    {
+		        p_task_display_dta->row = 1;
+		        p_task_display_dta->column = 0;
+		        p_task_display_dta->state = ST_DSP_SET_POS_L1;
+		    }
+
+		    break;
+
+		case ST_DSP_SET_POS_L1:
+
+		         displayCharPositionWrite(0, 1);
+
+		         p_task_display_dta->row = 1;
+		         p_task_display_dta->column = 0;
+		         p_task_display_dta->state = ST_DSP_WRITE_L1;
+
+		     break;
+
+		 case ST_DSP_WRITE_L1:
+
+		            if (p_task_display_dta->column < COLUMNS)
+		            {
+		                /* Write one character from row 1 */
+		                displayDataWrite(p_task_display_dta->ddram[1][p_task_display_dta->column]);
+
+		                p_task_display_dta->column++;
+		            }
+		            else
+		            {
+		                /* Display update completed */
+		                p_task_display_dta->flag = false;
+		                p_task_display_dta->event = EV_DSP_IDLE;
+		                p_task_display_dta->state = ST_DSP_IDLE;
+		            }
+
+		            break;
 
 		default:
 
 			p_task_display_dta->tick  = DEL_DSP_MIN;
+			p_task_display_dta->row = 0;
+			p_task_display_dta->column = 0;
 			p_task_display_dta->state = ST_DSP_IDLE;
 			p_task_display_dta->event = EV_DSP_IDLE;
 			p_task_display_dta->flag = false;

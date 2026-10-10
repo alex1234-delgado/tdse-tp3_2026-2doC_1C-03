@@ -55,7 +55,10 @@ typedef enum task_display_ev {EV_DSP_IDLE,
 
 /* State of Task Display */
 typedef enum task_display_st {ST_DSP_IDLE,
-							  ST_DSP_UPDATE} task_display_st_t;
+							  ST_DSP_SET_POS_L0,
+							  ST_DSP_WRITE_L0,
+							  ST_DSP_SET_POS_L1,
+							  ST_DSP_WRITE_L1} task_display_st_t;
 
 typedef struct
 {
