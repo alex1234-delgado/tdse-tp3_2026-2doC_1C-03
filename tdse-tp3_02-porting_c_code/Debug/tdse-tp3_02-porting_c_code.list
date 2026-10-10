@@ -7,23 +7,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         00003bdc  0800010c  0800010c  0000110c  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       0000039c  08003ce8  08003ce8  00004ce8  2**2
+  2 .rodata       00000394  08003ce8  08003ce8  00004ce8  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08004084  08004084  00006094  2**0
+  3 .ARM.extab    00000000  0800407c  0800407c  00006094  2**0
                   CONTENTS, READONLY
-  4 .ARM          00000008  08004084  08004084  00005084  2**2
+  4 .ARM          00000008  0800407c  0800407c  0000507c  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  0800408c  0800408c  00006094  2**0
+  5 .preinit_array 00000000  08004084  08004084  00006094  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  0800408c  0800408c  0000508c  2**2
+  6 .init_array   00000004  08004084  08004084  00005084  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  7 .fini_array   00000004  08004090  08004090  00005090  2**2
+  7 .fini_array   00000004  08004088  08004088  00005088  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  8 .data         00000094  20000000  08004094  00006000  2**2
+  8 .data         00000094  20000000  0800408c  00006000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          00000318  20000094  08004128  00006094  2**2
+  9 .bss          00000318  20000094  08004120  00006094  2**2
                   ALLOC
- 10 ._user_heap_stack 00000604  200003ac  08004128  000063ac  2**0
+ 10 ._user_heap_stack 00000604  200003ac  08004120  000063ac  2**0
                   ALLOC
  11 .ARM.attributes 00000029  00000000  00000000  00006094  2**0
                   CONTENTS, READONLY
@@ -1050,7 +1050,7 @@ LoopFillZerobss:
   ldr r1, =_edata
  80005ac:	20000094 	.word	0x20000094
   ldr r2, =_sidata
- 80005b0:	08004094 	.word	0x08004094
+ 80005b0:	0800408c 	.word	0x0800408c
   ldr r2, =_sbss
  80005b4:	20000094 	.word	0x20000094
   ldr r4, =_ebss
@@ -3468,7 +3468,7 @@ if (((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK
  800131e:	bf00      	nop
  8001320:	40022000 	.word	0x40022000
  8001324:	40021000 	.word	0x40021000
- 8001328:	08003fec 	.word	0x08003fec
+ 8001328:	08003fe4 	.word	0x08003fe4
  800132c:	20000000 	.word	0x20000000
  8001330:	20000004 	.word	0x20000004
 
@@ -3603,8 +3603,8 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
  80013c6:	bf00      	nop
  80013c8:	40021000 	.word	0x40021000
  80013cc:	007a1200 	.word	0x007a1200
- 80013d0:	08004004 	.word	0x08004004
- 80013d4:	08004014 	.word	0x08004014
+ 80013d0:	08003ffc 	.word	0x08003ffc
+ 80013d4:	0800400c 	.word	0x0800400c
  80013d8:	003d0900 	.word	0x003d0900
 
 080013dc <HAL_RCC_GetHCLKFreq>:
@@ -3650,7 +3650,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  800140c:	4618      	mov	r0, r3
  800140e:	bd80      	pop	{r7, pc}
  8001410:	40021000 	.word	0x40021000
- 8001414:	08003ffc 	.word	0x08003ffc
+ 8001414:	08003ff4 	.word	0x08003ff4
 
 08001418 <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -3676,7 +3676,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  8001434:	4618      	mov	r0, r3
  8001436:	bd80      	pop	{r7, pc}
  8001438:	40021000 	.word	0x40021000
- 800143c:	08003ffc 	.word	0x08003ffc
+ 800143c:	08003ff4 	.word	0x08003ff4
 
 08001440 <RCC_Delay>:
   * @brief  This function provides delay (in milliseconds) based on CPU cycles method.
@@ -4271,7 +4271,7 @@ static inline void cycle_counter_init(void)
  8001814:	bd90      	pop	{r4, r7, pc}
  8001816:	bf00      	nop
  8001818:	08003d58 	.word	0x08003d58
- 800181c:	08004030 	.word	0x08004030
+ 800181c:	08004028 	.word	0x08004028
  8001820:	08003d60 	.word	0x08003d60
  8001824:	20000170 	.word	0x20000170
  8001828:	08003d64 	.word	0x08003d64
@@ -4287,7 +4287,7 @@ static inline void cycle_counter_init(void)
  8001850:	08003db0 	.word	0x08003db0
  8001854:	e000edf0 	.word	0xe000edf0
  8001858:	e0001000 	.word	0xe0001000
- 800185c:	08004018 	.word	0x08004018
+ 800185c:	08004010 	.word	0x08004010
  8001860:	20000108 	.word	0x20000108
 
 08001864 <app_update>:
@@ -4548,7 +4548,7 @@ static inline uint32_t cycle_counter_get_time_us(void)
  80019c8:	20000100 	.word	0x20000100
  80019cc:	20000104 	.word	0x20000104
  80019d0:	e0001000 	.word	0xe0001000
- 80019d4:	08004018 	.word	0x08004018
+ 80019d4:	08004010 	.word	0x08004010
  80019d8:	20000108 	.word	0x20000108
  80019dc:	20000000 	.word	0x20000000
  80019e0:	431bde83 	.word	0x431bde83
@@ -5673,7 +5673,7 @@ void task_display_init(void *parameters)
  80020f8:	46bd      	mov	sp, r7
  80020fa:	bd90      	pop	{r4, r7, pc}
  80020fc:	08003e18 	.word	0x08003e18
- 8002100:	08004030 	.word	0x08004030
+ 8002100:	08004028 	.word	0x08004028
  8002104:	08003e20 	.word	0x08003e20
  8002108:	20000170 	.word	0x20000170
  800210c:	08003e24 	.word	0x08003e24
@@ -6192,12 +6192,12 @@ void task_test_init(void *parameters)
  8002438:	f7ff fd14 	bl	8001e64 <logger_log_print_>
  800243c:	b662      	cpsie	i
 
-	put_event_task_display(0, 0, "LCD Display Test");
+	put_event_task_display(0, 0, "Sigues viva....?");
  800243e:	4a16      	ldr	r2, [pc, #88]	@ (8002498 <task_test_init+0x1ac>)
  8002440:	2100      	movs	r1, #0
  8002442:	2000      	movs	r0, #0
  8002444:	f7ff ff1e 	bl	8002284 <put_event_task_display>
-	put_event_task_display(0, 1, " Porting C code ");
+	put_event_task_display(0, 1, " Code C ");
  8002448:	4a14      	ldr	r2, [pc, #80]	@ (800249c <task_test_init+0x1b0>)
  800244a:	2101      	movs	r1, #1
  800244c:	2000      	movs	r0, #0
@@ -6209,7 +6209,7 @@ void task_test_init(void *parameters)
  8002458:	bd90      	pop	{r4, r7, pc}
  800245a:	bf00      	nop
  800245c:	08003f38 	.word	0x08003f38
- 8002460:	08004030 	.word	0x08004030
+ 8002460:	08004028 	.word	0x08004028
  8002464:	08003f40 	.word	0x08003f40
  8002468:	20000170 	.word	0x20000170
  800246c:	08003f44 	.word	0x08003f44
@@ -6316,9 +6316,9 @@ void task_test_statechart(void)
  8002514:	46bd      	mov	sp, r7
  8002516:	bd80      	pop	{r7, pc}
  8002518:	200001ac 	.word	0x200001ac
- 800251c:	08003fd4 	.word	0x08003fd4
+ 800251c:	08003fcc 	.word	0x08003fcc
  8002520:	10624dd3 	.word	0x10624dd3
- 8002524:	08003fe8 	.word	0x08003fe8
+ 8002524:	08003fe0 	.word	0x08003fe0
 
 08002528 <findslot>:
  8002528:	4b0a      	ldr	r3, [pc, #40]	@ (8002554 <findslot+0x2c>)
@@ -6760,7 +6760,7 @@ void task_test_statechart(void)
  800290c:	f7ff fe34 	bl	8002578 <checkerror>
  8002910:	e7d0      	b.n	80028b4 <_get_semihosting_exts+0x50>
  8002912:	bf00      	nop
- 8002914:	08004034 	.word	0x08004034
+ 8002914:	0800402c 	.word	0x0800402c
 
 08002918 <initialise_semihosting_exts>:
  8002918:	b537      	push	{r0, r1, r2, r4, r5, lr}
@@ -6864,7 +6864,7 @@ void task_test_statechart(void)
  8002a08:	b005      	add	sp, #20
  8002a0a:	e8bd 8ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}
  8002a0e:	bf00      	nop
- 8002a10:	0800404a 	.word	0x0800404a
+ 8002a10:	08004042 	.word	0x08004042
  8002a14:	200001bc 	.word	0x200001bc
  8002a18:	200001c0 	.word	0x200001c0
  8002a1c:	200001b4 	.word	0x200001b4
@@ -7469,10 +7469,10 @@ void task_test_statechart(void)
  8002f4e:	4798      	blx	r3
  8002f50:	3601      	adds	r6, #1
  8002f52:	e7f2      	b.n	8002f3a <__libc_init_array+0x1e>
- 8002f54:	0800408c 	.word	0x0800408c
- 8002f58:	0800408c 	.word	0x0800408c
- 8002f5c:	0800408c 	.word	0x0800408c
- 8002f60:	08004090 	.word	0x08004090
+ 8002f54:	08004084 	.word	0x08004084
+ 8002f58:	08004084 	.word	0x08004084
+ 8002f5c:	08004084 	.word	0x08004084
+ 8002f60:	08004088 	.word	0x08004088
 
 08002f64 <__retarget_lock_init_recursive>:
  8002f64:	4770      	bx	lr
@@ -7980,9 +7980,9 @@ void task_test_statechart(void)
  80033ec:	a904      	add	r1, sp, #16
  80033ee:	f000 f9bd 	bl	800376c <_printf_i>
  80033f2:	e7ed      	b.n	80033d0 <_svfiprintf_r+0x1c0>
- 80033f4:	0800404e 	.word	0x0800404e
- 80033f8:	08004054 	.word	0x08004054
- 80033fc:	08004058 	.word	0x08004058
+ 80033f4:	08004046 	.word	0x08004046
+ 80033f8:	0800404c 	.word	0x0800404c
+ 80033fc:	08004050 	.word	0x08004050
  8003400:	00000000 	.word	0x00000000
  8003404:	08003159 	.word	0x08003159
 
@@ -8250,9 +8250,9 @@ void task_test_statechart(void)
  800366c:	a904      	add	r1, sp, #16
  800366e:	f000 f87d 	bl	800376c <_printf_i>
  8003672:	e7e4      	b.n	800363e <_vfiprintf_r+0x1e6>
- 8003674:	0800404e 	.word	0x0800404e
- 8003678:	08004054 	.word	0x08004054
- 800367c:	08004058 	.word	0x08004058
+ 8003674:	08004046 	.word	0x08004046
+ 8003678:	0800404c 	.word	0x0800404c
+ 800367c:	08004050 	.word	0x08004050
  8003680:	00000000 	.word	0x00000000
  8003684:	08003433 	.word	0x08003433
 
@@ -8584,8 +8584,8 @@ void task_test_statechart(void)
  8003998:	2500      	movs	r5, #0
  800399a:	f104 0619 	add.w	r6, r4, #25
  800399e:	e7f5      	b.n	800398c <_printf_i+0x220>
- 80039a0:	0800405f 	.word	0x0800405f
- 80039a4:	08004070 	.word	0x08004070
+ 80039a0:	08004057 	.word	0x08004057
+ 80039a4:	08004068 	.word	0x08004068
 
 080039a8 <__swbuf_r>:
  80039a8:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
