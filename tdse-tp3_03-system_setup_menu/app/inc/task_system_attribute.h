@@ -41,29 +41,59 @@ extern "C" {
 #endif
 
 /********************** inclusions *******************************************/
+#include <stdint.h>
+#include <stdbool.h>
 
 /********************** macros ***********************************************/
 
 /********************** typedef **********************************************/
-/* Events to excite Task System */
-typedef enum task_system_ev {EV_SYS_IDLE,
-							 EV_SYS_BTN_A,
-							 EV_SYS_ENTER,
-							 EV_SYS_NEXT,
-							 EV_SYS_ESCAPE} task_system_ev_t;
 
-/* State of Task System */
-typedef enum task_system_st {ST_SYS_IDLE,
-							 ST_SYS_ACTIVE} task_system_st_t;
+/* Tipos de datos para los parámetros de los Motores */
+typedef enum {
+	MOTOR_POWER_OFF = 0,
+	MOTOR_POWER_ON
+} task_system_power_t;
 
-typedef struct
-{
-	uint32_t			tick;
-	task_system_st_t	state;
-	task_system_ev_t	event;
-	bool				flag;
+typedef enum {
+	MOTOR_SPIN_LEFT = 0,
+	MOTOR_SPIN_RIGHT
+} task_system_spin_t;
+
+typedef struct {
+	task_system_power_t power;
+	uint32_t speed;             /* Velocidad entre 0 y 9 */
+	task_system_spin_t spin;
+} task_system_motor_t;
+
+/* Eventos enviados desde la tarea Sensor al presionar los botones */
+typedef enum task_system_ev {
+	EV_SYS_IDLE,
+	EV_SYS_BTN_A,
+	EV_SYS_ENTER,
+	EV_SYS_NEXT,
+	EV_SYS_ESCAPE
+} task_system_ev_t;
+
+/* Estados de la FSM del Menú de Configuración (4 Niveles) */
+typedef enum task_system_st {
+	ST_SYS_MAIN = 0,    /* Nivel 1: Resumen de Motor 1 y Motor 2 */
+	ST_SYS_MENU_1,      /* Nivel 2: Seleccionar Motor (1 o 2) */
+	ST_SYS_MENU_2,      /* Nivel 3: Seleccionar Parámetro (Power, Speed, Spin) */
+	ST_SYS_MENU_3       /* Nivel 4: Modificar Valor del Parámetro */
+} task_system_st_t;
+
+/* Estructura de datos de la tarea System */
+typedef struct {
+	uint32_t            tick;
+	task_system_st_t    state;
+	task_system_ev_t    event;
+	bool                flag;
+
+	/* Datos y navegación del menú de motores */
+	task_system_motor_t motor[2];
+	uint8_t             selected_motor; /* 0 = Motor 1, 1 = Motor 2 */
+	uint8_t             selected_param; /* 0 = Power, 1 = Speed, 2 = Spin */
 } task_system_dta_t;
-
 /********************** external data declaration ****************************/
 extern task_system_dta_t task_system_dta_list[];
 

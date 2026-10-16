@@ -61,8 +61,8 @@ all: main-build
 main-build: tdse-tp3_03-system_setup_menu.elf secondary-outputs
 
 # Tool invocations
-tdse-tp3_03-system_setup_menu.elf tdse-tp3_03-system_setup_menu.map: $(OBJS) $(USER_OBJS) /home/anonymus/STM32CubeIDE/workspace_1.19.0/tdse-workspace/tdse-tp3/tdse-tp3_03-system_setup_menu/STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "tdse-tp3_03-system_setup_menu.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"/home/anonymus/STM32CubeIDE/workspace_1.19.0/tdse-workspace/tdse-tp3/tdse-tp3_03-system_setup_menu/STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="tdse-tp3_03-system_setup_menu.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+tdse-tp3_03-system_setup_menu.elf tdse-tp3_03-system_setup_menu.map: $(OBJS) $(USER_OBJS) C:\Users\lhkev\Downloads\tdse-tp3_03-system_setup_menu\tdse-tp3_03-system_setup_menu\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "tdse-tp3_03-system_setup_menu.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\lhkev\Downloads\tdse-tp3_03-system_setup_menu\tdse-tp3_03-system_setup_menu\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="tdse-tp3_03-system_setup_menu.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

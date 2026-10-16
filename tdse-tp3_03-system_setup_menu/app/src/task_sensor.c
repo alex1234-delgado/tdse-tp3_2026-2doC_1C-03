@@ -116,7 +116,7 @@ void task_sensor_init(void *parameters)
 
 void task_sensor_update(void *parameters)
 {
-	uint32_t index = 0;
+	uint32_t index;
 
 	for (index = 0; SENSOR_DTA_QTY > index; index++)
 	{
@@ -127,84 +127,90 @@ void task_sensor_update(void *parameters)
 
 void task_sensor_statechart(uint32_t index)
 {
-	/* Update Task Sensor Configuration & Data Pointer */
-	const task_sensor_cfg_t *p_task_sensor_cfg = &task_sensor_cfg_list[index];
-	task_sensor_dta_t *p_task_sensor_dta = &task_sensor_dta_list[index];
+	const task_sensor_cfg_t *p_task_sensor_cfg;
+	task_sensor_dta_t *p_task_sensor_dta;
 
-	if (p_task_sensor_cfg->pressed == HAL_GPIO_ReadPin(p_task_sensor_cfg->gpio_port, p_task_sensor_cfg->pin))
+	for (index = 0; SENSOR_DTA_QTY > index; index++)
 	{
-		p_task_sensor_dta->event =	EV_BTN_DOWN;
-	}
-	else
-	{
-		p_task_sensor_dta->event =	EV_BTN_UP;
-	}
+		/* Update Task Sensor Configuration & Data Pointer */
+		p_task_sensor_cfg = &task_sensor_cfg_list[index];
+		p_task_sensor_dta = &task_sensor_dta_list[index];
 
-	switch (p_task_sensor_dta->state)
-	{
-		case ST_BTN_UP:
+		if (p_task_sensor_cfg->pressed == HAL_GPIO_ReadPin(p_task_sensor_cfg->gpio_port, p_task_sensor_cfg->pin))
+		{
+			p_task_sensor_dta->event =	EV_BTN_DOWN;
+		}
+		else
+		{
+			p_task_sensor_dta->event =	EV_BTN_UP;
+		}
 
-			if (EV_BTN_DOWN == p_task_sensor_dta->event)
-			{
-				p_task_sensor_dta->state = ST_BTN_FALLING;
-				p_task_sensor_dta->tick  = DEL_BTN_MAX;
-			}
+		switch (p_task_sensor_dta->state)
+		{
+			case ST_BTN_UP:
 
-			break;
+				if (EV_BTN_DOWN == p_task_sensor_dta->event)
+				{
+					p_task_sensor_dta->tick = p_task_sensor_cfg->tick_max;
+					p_task_sensor_dta->state = ST_BTN_FALLING;
+				}
 
-		case ST_BTN_FALLING:
+				break;
 
-			if (EV_BTN_UP == p_task_sensor_dta->event && p_task_sensor_dta->tick == DEL_BTN_MIN)
-			{
-				p_task_sensor_dta->state = ST_BTN_UP;
-			}
-			else if (EV_BTN_DOWN == p_task_sensor_dta->event && p_task_sensor_dta->tick == DEL_BTN_MIN)
-			{
-				put_event_task_system(p_task_sensor_cfg->signal_down);
-				p_task_sensor_dta->state = ST_BTN_DOWN;
-			}
-			else if (DEL_BTN_MIN < p_task_sensor_dta->tick)
-			{
+			case ST_BTN_FALLING:
+
 				p_task_sensor_dta->tick--;
-			}
+				if (DEL_BTN_MIN == p_task_sensor_dta->tick)
+				{
+					if (EV_BTN_DOWN == p_task_sensor_dta->event)
+					{
+						put_event_task_system(p_task_sensor_cfg->signal_down);
+						p_task_sensor_dta->state = ST_BTN_DOWN;
+					}
+					else
+					{
+						p_task_sensor_dta->state = ST_BTN_UP;
+					}
+				}
 
-			break;
+				break;
 
-		case ST_BTN_DOWN:
+			case ST_BTN_DOWN:
 
-			if (EV_BTN_UP == p_task_sensor_dta->event)
-			{
-				p_task_sensor_dta->state = ST_BTN_RISING;
-				p_task_sensor_dta->tick  = DEL_BTN_MAX;
-			}
+				if (EV_BTN_UP == p_task_sensor_dta->event)
+				{
+					p_task_sensor_dta->state = ST_BTN_RISING;
+					p_task_sensor_dta->tick = p_task_sensor_cfg->tick_max;
+				}
 
-			break;
+				break;
 
-		case ST_BTN_RISING:
+			case ST_BTN_RISING:
 
-			if (EV_BTN_UP == p_task_sensor_dta->event && p_task_sensor_dta->tick == DEL_BTN_MIN)
-			{
-				put_event_task_system(p_task_sensor_cfg->signal_up);
-				p_task_sensor_dta->state = ST_BTN_UP;
-			}
-			else if (EV_BTN_DOWN == p_task_sensor_dta->event && p_task_sensor_dta->tick == DEL_BTN_MIN)
-			{
-				p_task_sensor_dta->state = ST_BTN_DOWN;
-			}
-			else if (DEL_BTN_MIN < p_task_sensor_dta->tick)
-			{
 				p_task_sensor_dta->tick--;
-			}
+				if (DEL_BTN_MIN == p_task_sensor_dta->tick)
+				{
+					if (EV_BTN_UP == p_task_sensor_dta->event)
+					{
+						put_event_task_system(p_task_sensor_cfg->signal_up);
+						p_task_sensor_dta->state = ST_BTN_UP;
+					}
+					else
+					{
+						p_task_sensor_dta->state = ST_BTN_DOWN;
+					}
+				}
+
+				break;
+
+			default:
+
+				p_task_sensor_dta->tick  = DEL_BTN_MIN;
+				p_task_sensor_dta->state = ST_BTN_UP;
+				p_task_sensor_dta->event = EV_BTN_UP;
 
 			break;
-
-		default:
-
-			p_task_sensor_dta->tick  = DEL_BTN_MIN;
-			p_task_sensor_dta->state = ST_BTN_UP;
-			p_task_sensor_dta->event = EV_BTN_UP;
-
-			break;
+		}
 	}
 }
 

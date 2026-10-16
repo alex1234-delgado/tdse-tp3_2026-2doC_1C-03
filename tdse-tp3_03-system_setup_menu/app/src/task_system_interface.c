@@ -105,7 +105,7 @@ task_system_ev_t get_event_task_system(void)
 
 bool any_event_task_system(void)
 {
-	return (event_task_system_queue.count > 0);
+  return (event_task_system_queue.head != event_task_system_queue.tail);
 }
 
 /********************** end of file ******************************************/
